@@ -205,8 +205,8 @@ float postfixToSolution(string rpn)
 	return finalStack.top();
 }
 
-int main() {
-
+int main() 
+{
 	// reads string from user
 	string str, rpn;
 	cout << "Please enter a mathematical expression.\n";
@@ -236,3 +236,26 @@ int main() {
 			return 0;
 		}
 	}
+	
+	// placeholder for the solution
+	double solution = 0;
+
+	// calls the infix to postfix function which returns the expression in reverse polish notation
+	rpn = infixToPostfix(str);
+
+	// checks if rpn is empty
+	if (rpn.empty())
+	{
+		cout << "Invalid character or space. Goodbye.\n";
+		return 0;
+	}
+
+	cout << "The Reverse Polish Notation for the expression: " << str << " is: " << rpn << "\n";
+
+	// solution is the rpn evaluated
+	solution = postfixToSolution(rpn);
+
+	cout << "The solution for the expression: " << str << " is: " << solution << "\n";
+
+	return 0;
+}
