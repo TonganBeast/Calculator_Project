@@ -27,6 +27,72 @@ int precedence(char c)
 	}
 }
 
+// main function to convert infix expression to postfix
+string infixToPostfix(string s)
+{
+	stack<char> workingStack;
+	workingStack.push('N');
+	int l = s.length();
+	string reversePolish;
+
+	for (int i = 0; i < l; i++)
+	{
+
+		// if the scanned character is an operand, add it to output string
+		if ((s[i] >= '0' && s[i] <= '9') || (s[i] == '.'))
+		{
+			reversePolish += s[i];
+		}
+
+		// if the scanned character is a '(', push it to the stack
+		else if (s[i] == '(')
+		{
+			workingStack.push('(');
+		}
+
+		// if the scanned character is a ')', pop to output string from the stack until '(' is encountered. 
+		else if (s[i] == ')')
+		{
+			while (workingStack.top() != 'N' && workingStack.top() != '(')
+			{
+				char c = workingStack.top();
+				workingStack.pop();
+				reversePolish += c;
+			}
+			if (workingStack.top() == '(')
+			{
+				char c = workingStack.top();
+				workingStack.pop();
+			}
+		}
+
+		// if an operator is scanned 
+		else
+		{
+			reversePolish += ",";
+			while (workingStack.top() != 'N' && precedence(s[i]) <= precedence(workingStack.top()))
+			{
+				char c = workingStack.top();
+				workingStack.pop();
+				reversePolish += c;
+			}
+			workingStack.push(s[i]);
+		}
+	}
+
+	// pop all remaining elements from stack 
+	while (workingStack.top() != 'N')
+	{
+		char c = workingStack.top();
+		workingStack.pop();
+		reversePolish += c;
+	}
+
+	size_t find = reversePolish.find_last_of("0123456789");
+	reversePolish.insert(find + 1, ",");
+	return reversePolish;
+}
+
 int main() {
 
 	// reads string from user
