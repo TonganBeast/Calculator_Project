@@ -22,3 +22,18 @@ int main() {
 		cout << "Invalid character or space. Goodbye.\n";
 		return 0;
 	}
+	
+	// tests for user trying to multiply without * operator
+	for (int i = 0; i < 10; i++)
+	{
+		string test, test1, test2;
+		test = to_string(i);
+		test1 = test + '(';
+		test2 = ')' + test;
+
+		if (str.find(")(") != string::npos || str.find(test1) != string::npos || str.find(test2) != string::npos)
+		{
+			cout << "If you wish to multiply, use the * operator. Goodbye.\n";
+			return 0;
+		}
+	}
