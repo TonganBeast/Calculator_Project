@@ -93,6 +93,118 @@ string infixToPostfix(string s)
 	return reversePolish;
 }
 
+float postfixToSolution(string rpn)
+{
+
+	// values for stack operations
+	stack<double> finalStack;
+	double a, b, c;
+	string temp, perm;
+
+	while (!rpn.empty())
+	{
+		// finds first occurrence of operators for easy tokenizing
+		size_t found = rpn.find_first_of(",^*/+-()");
+
+		// this tokenizes all the operands and pushes them on the stack
+		if (rpn[found] == ',')
+		{
+			temp = rpn.substr(0, found);
+			perm = rpn.substr(found + 1, rpn.length() - found);
+			if (temp.empty())
+			{
+				cout << "Invalid character or space. Goodbye.\n";
+				_Exit(EXIT_FAILURE);
+			}
+			a = stod(temp);
+			finalStack.push(a);
+			a = 0;
+			rpn = perm;
+		}
+
+		// this does the exponentiation
+		else if (rpn[found] == '^')
+		{
+			perm = rpn.substr(found + 1, rpn.length() - found);
+			b = finalStack.top();
+			finalStack.pop();
+			a = finalStack.top();
+			finalStack.pop();
+			c = pow(a, b);
+			finalStack.push(c);
+			rpn = perm;
+			a, b, c = 0;
+		}
+
+		// multiplication
+		else if (rpn[found] == '*')
+		{
+			perm = rpn.substr(found + 1, rpn.length() - found);
+			b = finalStack.top();
+			finalStack.pop();
+			a = finalStack.top();
+			finalStack.pop();
+			c = (a * b);
+			finalStack.push(c);
+			rpn = perm;
+			a, b, c = 0;
+		}
+
+		// division
+		else if (rpn[found] == '/')
+		{
+			perm = rpn.substr(found + 1, rpn.length() - found);
+			b = finalStack.top();
+			finalStack.pop();
+			a = finalStack.top();
+			finalStack.pop();
+			if (b == 0) {
+				cout << "Invalid input. Division by 0 is forbidden. Goodbye.\n";
+				_Exit(EXIT_FAILURE);
+			}
+			c = (a / b);
+			finalStack.push(c);
+			rpn = perm;
+			a, b, c = 0;
+		}
+
+		// addition
+		else if (rpn[found] == '+')
+		{
+			perm = rpn.substr(found + 1, rpn.length() - found);
+			b = finalStack.top();
+			finalStack.pop();
+			a = finalStack.top();
+			finalStack.pop();
+			c = (a + b);
+			finalStack.push(c);
+			rpn = perm;
+			a, b, c = 0;
+		}
+
+		// subtraction
+		else if (rpn[found] == '-')
+		{
+			perm = rpn.substr(found + 1, rpn.length() - found);
+			b = finalStack.top();
+			finalStack.pop();
+			a = finalStack.top();
+			finalStack.pop();
+			c = (a - b);
+			finalStack.push(c);
+			rpn = perm;
+			a, b, c = 0;
+		}
+		
+		// exits if there are other characters which should not be in the expression
+		else
+		{
+			_Exit(EXIT_FAILURE);
+		}
+	}
+	return finalStack.top();
+}
+
 int main() {
 
 	// reads string from user
